@@ -1,0 +1,3 @@
+#$manufacturer = 'HP'
+include psp
+

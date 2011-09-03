@@ -1,0 +1,10 @@
+Structure the manifests so that they follow a particular OS and PSP release.
+Then, tailor the manifest to the packages in that release.  For example, 
+CentOS is an older release and does not have the kernel modules.  Oracle is
+up with RedHat, but does not have the kernel modules.
+
+CentOS/5/$basearch/8.25/
+Oracle/5/$basearch/8.60/
+RedHat/5/$basearch/8.60/
+RedHat/6/$basearch/8.62/
+
