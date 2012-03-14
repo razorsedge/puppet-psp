@@ -1,0 +1,10 @@
+name 'razorsedge-psp'
+version '0.0.1'
+
+author 'razorsedge'
+license 'Apache 2.0'
+project_page 'https://github.com/runningman/puppet-psp'
+source 'git://github.com/runningman/puppet-psp.git'
+summary 'Puppet module to manage HP Proliant Support Pack hardware monitoring installation.'
+description 'UNKNOWN'
+dependency 'razorsedge/snmpd', '>=0.0.1'

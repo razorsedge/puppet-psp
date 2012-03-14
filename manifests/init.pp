@@ -7,12 +7,12 @@
 # Actions:
 #
 # Requires:
-#   $manufacturer: This fact must be 'HP'.
+#   $::manufacturer: This fact must be 'HP'.
 #
 # Sample Usage:
 #
 class psp {
-  case $manufacturer {
+  case $::manufacturer {
     HP: {
       include psp::base
       #include psp::hpdiags
@@ -24,4 +24,3 @@ class psp {
     default: { }
   }
 }
-

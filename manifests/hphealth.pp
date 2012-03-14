@@ -1,13 +1,25 @@
+# Class: psp::hphealth
+#
+# This class manages hphealth.
+#
+# Parameters:
+#
+# Actions:
+#
+# Requires:
+#
+# Sample Usage:
+#
 class psp::hphealth {
   package { "hp-OpenIPMI":
     ensure => "present",
-    name => $operatingsystem ? {
-      /CentOS|centos|Redhat|redhat|OEL|oel/ => $operatingsystemrelease ? {
+    name   => $::operatingsystem ? {
+      /CentOS|RedHat|OEL|OracleLinux/ => $::operatingsystemrelease ? {
         /6.*/      => "OpenIPMI",
         /5.[5-9]*/ => "OpenIPMI",
         default    => "hp-OpenIPMI",
       },  
-      default                               => "hp-OpenIPMI",
+      default                         => "hp-OpenIPMI",
     },
   }
   
@@ -22,13 +34,13 @@ class psp::hphealth {
   }
   
   package { "hp-ilo":
-    ensure => $operatingsystem ? {
-      /CentOS|centos|Redhat|redhat|OEL|oel/ => $operatingsystemrelease ? {
+    ensure => $::operatingsystem ? {
+      /CentOS|RedHat|OEL|OracleLinux/ => $::operatingsystemrelease ? {
         /6.*/      => "absent",
         /5.[3-9]*/ => "absent",
         default    => "present",
       },
-      default                               => "present",
+      default                         => "present",
     },
     name   => "hp-ilo",
   }
@@ -40,21 +52,21 @@ class psp::hphealth {
   
   service { "hp-ilo":
     name       => "hp-ilo",
-    ensure => $operatingsystem ? {
-      /CentOS|centos|Redhat|redhat|OEL|oel/ => $operatingsystemrelease ? {
+    ensure     => $::operatingsystem ? {
+      /CentOS|RedHat|OEL|OracleLinux/ => $::operatingsystemrelease ? {
         /6.*/      => undef,
         /5.[3-9]*/ => undef,
         default    => "running",
       },
-      default                               => "running",
+      default                         => "running",
     },
-    enable => $operatingsystem ? {
-      /CentOS|centos|Redhat|redhat|OEL|oel/ => $operatingsystemrelease ? {
+    enable     => $::operatingsystem ? {
+      /CentOS|RedHat|OEL|OracleLinux/ => $::operatingsystemrelease ? {
         /6.*/      => undef,
         /5.[3-9]*/ => undef,
         default    => "true",
       },
-      default                               => "true",
+      default                         => "true",
     },
     hasrestart => "true",
     hasstatus  => "true",
@@ -78,6 +90,4 @@ class psp::hphealth {
 #    hasstatus  => "true",
 #    require    => Package["hp-health"],
 #  }
-
 }
-

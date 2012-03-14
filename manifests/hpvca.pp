@@ -1,8 +1,20 @@
+# Class: psp::hpvca
+#
+# This class manages hpvca.
+#
+# Parameters:
+#
+# Actions:
+#
+# Requires:
+#
+# Sample Usage:
+#
 class psp::hpvca {
   package { "hpvca":
-    ensure => $operatingsystem ? {
-      /Redhat|redhat/ => "present",
-      default         => "absent",
+    ensure => $::operatingsystem ? {
+      RedHat  => "present",
+      default => "absent",
     },
     name   => "hpvca",
   }
@@ -11,18 +23,16 @@ class psp::hpvca {
 
   service { "hpvca":
     name       => "hpvca",
-    ensure     => $operatingsystem ? {
-      /Redhat|redhat/ => "running",
-      default         => "stopped",
+    ensure     => $::operatingsystem ? {
+      RedHat  => "running",
+      default => "stopped",
     },
-    enable     => $operatingsystem ? {
-      /Redhat|redhat/ => "true",
-      default         => "false",
+    enable     => $::operatingsystem ? {
+      RedHat  => "true",
+      default => "false",
     },
     hasrestart => "true",
     hasstatus  => "true",
     require    => Package["hpvca"],
   }
-
 }
-
