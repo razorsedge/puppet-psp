@@ -18,8 +18,8 @@ class psp::hpvca {
     },
     name   => "hpvca",
   }
-  
-#mja: file or exec for configuration?
+
+#TODO: file or exec for hpvca configuration?
 
   service { "hpvca":
     name       => "hpvca",
@@ -28,11 +28,11 @@ class psp::hpvca {
       default => "stopped",
     },
     enable     => $::operatingsystem ? {
-      RedHat  => "true",
-      default => "false",
+      RedHat  => true,
+      default => false,
     },
-    hasrestart => "true",
-    hasstatus  => "true",
+    hasrestart => true,
+    hasstatus  => true,
     require    => Package["hpvca"],
   }
 }

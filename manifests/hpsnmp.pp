@@ -12,6 +12,7 @@
 #
 class psp::hpsnmp {
   include psp::snmpd
+  #Class["psp::snmpd"] -> Class["psp::hpsnmp"]
 
   package { "hp-snmp-agents":
     ensure => "present",
@@ -40,7 +41,7 @@ class psp::hpsnmp {
    #onlyif      => "test -f /etc/snmp/snmpd.conf-HP",
     require     => File["snmpd.conf-HP"],
     notify      => Exec["hpsnmpconfig"],
-    refreshonly => "true",
+    refreshonly => true,
   }
 
   exec { "hpsnmpconfig":
@@ -57,7 +58,7 @@ class psp::hpsnmp {
     ],
 #    subscribe => File["snmpd.conf"],
 #    creates => "/etc/hp-snmp-agents.conf",
-    refreshonly => "true",
+    refreshonly => true,
     require     => Package["hp-snmp-agents"],
     before      => Service["hp-snmp-agents"],
     notify      => Service["snmpd"],
@@ -80,9 +81,9 @@ class psp::hpsnmp {
   service { "hp-snmp-agents":
     name       => "hp-snmp-agents",
     ensure     => "running",
-    enable     => "true",
-    hasrestart => "true",
-    hasstatus  => "true",
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
     require    => Package["hp-snmp-agents"],
   }
 }

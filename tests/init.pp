@@ -1,3 +1,1 @@
-#$manufacturer = 'HP'
 include psp
-

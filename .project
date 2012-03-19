@@ -3,6 +3,7 @@
 	<name>psp</name>
 	<comment></comment>
 	<projects>
+		<project>snmpd</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

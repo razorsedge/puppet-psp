@@ -64,21 +64,21 @@ class psp::hphealth {
       /CentOS|RedHat|OEL|OracleLinux/ => $::operatingsystemrelease ? {
         /6.*/      => undef,
         /5.[3-9]*/ => undef,
-        default    => "true",
+        default    => true,
       },
-      default                         => "true",
+      default                         => true,
     },
-    hasrestart => "true",
-    hasstatus  => "true",
+    hasrestart => true,
+    hasstatus  => true,
     require    => Package["hp-ilo"],
   }
 
   service { "hp-health":
     name       => "hp-health",
     ensure     => "running",
-    enable     => "true",
-    hasrestart => "true",
-    hasstatus  => "true",
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
     require    => [ Package["hp-health"], Package["hp-OpenIPMI"], ],
   }
 

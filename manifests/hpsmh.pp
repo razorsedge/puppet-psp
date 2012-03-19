@@ -65,9 +65,9 @@ class psp::hpsmh {
   service { "hpsmhd":
     name       => "hpsmhd",
     ensure     => "running",
-    enable     => "true",
-    hasrestart => "true",
-    hasstatus  => "true",
+    enable     => true,
+    hasrestart => true,
+    hasstatus  => true,
     require    => Package["hpsmh"],
   }
 }
