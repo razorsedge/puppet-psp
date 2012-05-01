@@ -11,21 +11,20 @@
 # Sample Usage:
 #
 class psp::hpvca {
-  package { "hpvca":
+  package { 'hpvca':
     ensure => $::operatingsystem ? {
-      RedHat  => "present",
-      default => "absent",
+      RedHat  => 'present',
+      default => 'absent',
     },
-    name   => "hpvca",
+    name   => 'hpvca',
   }
 
 #TODO: file or exec for hpvca configuration?
 
-  service { "hpvca":
-    name       => "hpvca",
+  service { 'hpvca':
     ensure     => $::operatingsystem ? {
-      RedHat  => "running",
-      default => "stopped",
+      RedHat  => 'running',
+      default => 'stopped',
     },
     enable     => $::operatingsystem ? {
       RedHat  => true,
@@ -33,6 +32,7 @@ class psp::hpvca {
     },
     hasrestart => true,
     hasstatus  => true,
-    require    => Package["hpvca"],
+    require    => Package['hpvca'],
+    name       => 'hpvca',
   }
 }

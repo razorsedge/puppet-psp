@@ -11,9 +11,9 @@
 # Sample Usage:
 #
 class psp::snmpd inherits ::snmp {
-  File["snmpd.conf"] {
-    mode    => "660",
-    group   => "hpsmh",
+  File['snmpd.conf'] {
+    mode    => '0660',
+    group   => 'hpsmh',
     source  => undef,
     content => undef,
   }

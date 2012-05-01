@@ -7,13 +7,13 @@ class psp::params {
   $yum_protect  = '0'
 
   case $::operatingsystem {
-    "CentOS": {
+    'CentOS': {
       $yum_operatingsystem = 'CentOS'
     }
-    "OracleLinux", "OEL": {
+    'OracleLinux', 'OEL': {
       $yum_operatingsystem = 'Oracle'
     }
-    "RedHat": {
+    'RedHat': {
       $yum_operatingsystem = 'RedHat'
     }
     default: {

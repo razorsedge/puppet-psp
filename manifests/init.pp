@@ -14,25 +14,25 @@
 #
 class psp {
   case $::manufacturer {
-    "HP": {
+    'HP': {
       include psp::params
-      Class["psp"] -> Class["psp::hpsmh"] -> Class["psp::hpsnmp"] -> Class["psp::hphealth"] -> Class["psp::hpvca"]
+      Class['psp'] -> Class['psp::hpsmh'] -> Class['psp::hpsnmp'] -> Class['psp::hphealth'] -> Class['psp::hpvca']
 
-      group { "hpsmh":
-        ensure => "present",
+      group { 'hpsmh':
+        ensure => 'present',
         gid    => $psp::params::gid,
       }
 
-      user { "hpsmh":
-        ensure => "present",
+      user { 'hpsmh':
+        ensure => 'present',
         uid    => $psp::params::uid,
-        gid    => "hpsmh",
-        home   => "/opt/hp/hpsmh",
-        shell  => "/sbin/nologin",
+        gid    => 'hpsmh',
+        home   => '/opt/hp/hpsmh',
+        shell  => '/sbin/nologin',
       }
 
-      yumrepo { "HP-psp":
-        descr    => "HP Software Delivery Repository for Proliant Support Pack",
+      yumrepo { 'HP-psp':
+        descr    => 'HP Software Delivery Repository for Proliant Support Pack',
         enabled  => 1,
         gpgcheck => 1,
         gpgkey   => "${psp::params::yum_server}${psp::params::yum_path}/GPG-KEY-ProLiantSupportPack",
