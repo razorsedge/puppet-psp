@@ -15,6 +15,9 @@
 class psp {
   case $::manufacturer {
     "HP": {
+      include psp::params
+      Class["psp"] -> Class["psp::hpsmh"] -> Class["psp::hpsnmp"] -> Class["psp::hphealth"] -> Class["psp::hpvca"]
+
       group { "hpsmh":
         ensure => "present",
         gid    => $psp::params::gid,
@@ -28,54 +31,22 @@ class psp {
         shell  => "/sbin/nologin",
       }
 
-#      Yumrepo {
-#        descr    => "HP Software Delivery Repository for Proliant Support Pack",
-#        enabled  => 1,
-#        gpgkey   => "http://downloads.linux.hp.com/SDR/downloads/proliantsupportpack/GPG-KEY-ProLiantSupportPack",
-#        gpgcheck => 1,
-#        priority => 50,
-#        protect  => 0,
-#        #require  => [ Package["yum-priorities"], Package["yum-protectbase"], ],
-#      }
-#
-#      case $::operatingsystem {
-#        CentOS: {
-#          yumrepo { "HP-psp":
-#            baseurl  => "http://downloads.linux.hp.com/SDR/downloads/proliantsupportpack/CentOS/\$releasever/packages/\$basearch/",
-#          }
-#        }
-#        OracleLinux, OEL: {
-#          yumrepo { "HP-psp":
-#            baseurl  => "http://downloads.linux.hp.com/SDR/downloads/proliantsupportpack/Oracle/\$releasever/packages/\$basearch/",
-#          }
-#        }
-#        RedHat: {
-#          yumrepo { "HP-psp":
-#            baseurl  => "http://downloads.linux.hp.com/SDR/downloads/proliantsupportpack/RedHat/\$releasever/packages/\$basearch/",
-#          }
-#        }
-#        default: {
-#          fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")
-#        }
-#      }
-
       yumrepo { "HP-psp":
         descr    => "HP Software Delivery Repository for Proliant Support Pack",
         enabled  => 1,
         gpgcheck => 1,
-        gpgkey   => "http://downloads.linux.hp.com/SDR/downloads/proliantsupportpack/GPG-KEY-ProLiantSupportPack",
-        baseurl  => "http://downloads.linux.hp.com/SDR/downloads/proliantsupportpack/${psp::params::yum_operatingsystem}/\$releasever/packages/\$basearch/",
+        gpgkey   => "${psp::params::yum_server}${psp::params::yum_path}/GPG-KEY-ProLiantSupportPack",
+        baseurl  => "${psp::params::yum_server}${psp::params::yum_path}/${psp::params::yum_operatingsystem}/\$releasever/packages/\$basearch/",
         priority => $psp::params::yum_priority,
         protect  => $psp::params::yum_protect,
-       #require  => [ Package["yum-priorities"], Package["yum-protectbase"], ],
       }
 
-      include psp::params
       include psp::hpsmh
       include psp::hpsnmp
       include psp::hphealth
       include psp::hpvca
     }
+    # If we are not on HP hardware, do not do anything.
     default: { }
   }
 }

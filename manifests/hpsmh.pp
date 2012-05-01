@@ -33,6 +33,7 @@ class psp::hpsmh {
     name   => "hpsmh",
   }
 
+  # TODO: Figure out some dynamic way to use hpsmh-cert-host1
   file { "hpsmh-cert-host1":
     mode    => "644",
     owner   => "root",

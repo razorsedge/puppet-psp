@@ -8,3 +8,6 @@ Oracle/5/$basearch/8.60/
 RedHat/5/$basearch/8.60/
 RedHat/6/$basearch/8.62/
 
+
+Add support for SuSE, Debian, and Ubuntu.
+
