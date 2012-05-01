@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class psp::snmpd inherits ::snmpd {
+class psp::snmpd inherits ::snmp {
   File["snmpd.conf"] {
     mode    => "660",
     group   => "hpsmh",
