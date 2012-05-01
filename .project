@@ -3,7 +3,7 @@
 	<name>psp</name>
 	<comment></comment>
 	<projects>
-		<project>snmpd</project>
+		<project>snmp</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
@@ -23,7 +23,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1335048072211</id>
+			<id>1335853193563</id>
 			<name></name>
 			<type>10</type>
 			<matcher>
@@ -32,7 +32,7 @@
 			</matcher>
 		</filter>
 		<filter>
-			<id>1335048072231</id>
+			<id>1335853193577</id>
 			<name></name>
 			<type>26</type>
 			<matcher>

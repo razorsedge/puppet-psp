@@ -11,8 +11,8 @@
 # Sample Usage:
 #
 class psp::hpsnmp {
-  include psp::snmpd
-  #Class['psp::snmpd'] -> Class['psp::hpsnmp']
+  include psp::snmp
+  #Class['psp::snmp'] -> Class['psp::hpsnmp']
 
   package { 'hp-snmp-agents':
     ensure => 'present',

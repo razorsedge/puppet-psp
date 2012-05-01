@@ -1,6 +1,6 @@
-# Class: snmpd
+# Class: psp::snmp
 #
-# This class manages snmpd.
+# This class manages snmp.
 #
 # Parameters:
 #
@@ -10,7 +10,7 @@
 #
 # Sample Usage:
 #
-class psp::snmpd inherits ::snmp {
+class psp::snmp inherits snmp::server {
   File['snmpd.conf'] {
     mode    => '0660',
     group   => 'hpsmh',
