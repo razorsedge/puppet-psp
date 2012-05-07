@@ -1,38 +1,99 @@
-# Class: psp::hpvca
+# == Class: psp::hpvca
 #
-# This class manages hpvca.
+# This class handles installation of the HP Proliant Support Pack Version
+# Control Agent.
 #
-# Parameters:
+# === Parameters:
 #
-# Actions:
+# [*ensure*]
+#   Ensure if present or absent.
+#   Default: auto-set, platform specific
 #
-# Requires:
+# [*autoupgrade*]
+#   Upgrade package automatically, if there is a newer version.
+#   Default: false
 #
-# Sample Usage:
+# [*service_ensure*]
+#   Ensure if service is running or stopped.
+#   Default: running
 #
-class psp::hpvca {
+# [*service_enable*]
+#   Start service at boot.
+#   Default: true
+#
+# [*service_hasstatus*]
+#   Service has status command.
+#   Default: true
+#
+# [*service_hasrestart*]
+#   Service has restart command.
+#   Default: true
+#
+# === Actions:
+#
+# Installs the HP Version Control Agent.
+#
+# === Requires:
+#
+# Class['psp']
+#
+# === Sample Usage:
+#
+#   class { 'psp::hpvca': }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2012 Mike Arnold, unless otherwise noted.
+#
+class psp::hpvca (
+  $ensure             = $psp::params::vca_ensure,
+  $autoupgrade        = false,
+  $service_ensure     = 'running',
+  $service_enable     = true,
+  $service_hasstatus  = true,
+  $service_hasrestart = true
+) inherits psp::params {
+
+  case $ensure {
+    /(present)/: {
+      if $autoupgrade == true {
+        $package_ensure = 'latest'
+      } else {
+        $package_ensure = 'present'
+      }
+
+      if $service_ensure in [ running, stopped ] {
+        $service_ensure_real = $service_ensure
+        $service_enable_real = $service_enable
+      } else {
+        fail('service_ensure parameter must be running or stopped')
+      }
+    }
+    /(absent)/: {
+      $package_ensure = 'absent'
+      $service_ensure_real = 'stopped'
+      $service_enable_real = false
+    }
+    default: {
+      fail('ensure parameter must be present or absent')
+    }
+  }
+
   package { 'hpvca':
-    ensure => $::operatingsystem ? {
-      RedHat  => 'present',
-      default => 'absent',
-    },
-    name   => 'hpvca',
+    ensure => $ensure,
   }
 
 #TODO: file or exec for hpvca configuration?
 
   service { 'hpvca':
-    ensure     => $::operatingsystem ? {
-      RedHat  => 'running',
-      default => 'stopped',
-    },
-    enable     => $::operatingsystem ? {
-      RedHat  => true,
-      default => false,
-    },
-    hasrestart => true,
-    hasstatus  => true,
+    ensure     => $service_ensure_real,
+    enable     => $service_enable_real,
+    hasrestart => $service_hasrestart,
+    hasstatus  => $service_hasstatus,
     require    => Package['hpvca'],
-    name       => 'hpvca',
   }
 }

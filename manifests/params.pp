@@ -21,12 +21,15 @@ class psp::params {
   case $::operatingsystem {
     'CentOS': {
       $yum_os = 'CentOS'
+      $vca_ensure = 'absent'
     }
     'OracleLinux', 'OEL': {
       $yum_os = 'Oracle'
+      $vca_ensure = 'absent'
     }
     'RedHat': {
       $yum_os = 'RedHat'
+      $vca_ensure = 'present'
     }
     default: {
       fail("Module psp is not supported on ${::operatingsystem}")
