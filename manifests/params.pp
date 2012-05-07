@@ -1,3 +1,15 @@
+# == Class: psp::params
+#
+# This class handles OS-specific configuration of the psp module.
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2012 Mike Arnold, unless otherwise noted.
+#
 class psp::params {
   $gid          = '490'
   $uid          = '490'
@@ -8,16 +20,16 @@ class psp::params {
 
   case $::operatingsystem {
     'CentOS': {
-      $yum_operatingsystem = 'CentOS'
+      $yum_os = 'CentOS'
     }
     'OracleLinux', 'OEL': {
-      $yum_operatingsystem = 'Oracle'
+      $yum_os = 'Oracle'
     }
     'RedHat': {
-      $yum_operatingsystem = 'RedHat'
+      $yum_os = 'RedHat'
     }
     default: {
-      fail("${::hostname}: This module does not support operatingsystem ${::operatingsystem}")
+      fail("Module psp is not supported on ${::operatingsystem}")
     }
   }
 }

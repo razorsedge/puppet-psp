@@ -1,31 +1,71 @@
-# Class: psp
+# == Class: psp
 #
-# This module handles installation of the HP Proliant Support Pack version 8.60.
+# This class handles installation of the HP Proliant Support Pack.
 #
-# Parameters:
+# === Parameters:
 #
-# Actions:
+# [*smh_gid*]
+#   The group ID of the SMH user.
+#   Default: 490
 #
-# Requires:
-#   $::manufacturer    - fact
-#   $::operatingsystem - fact
+# [*smh_uid*]
+#   The user ID of the SMH user.
+#   Default: 490
 #
-# Sample Usage:
+# [*ensure*]
+#   Ensure if present or absent.
+#   Default: present
 #
-class psp {
+# === Actions:
+#
+# Installs the SMH user and group as well as the YUM repository.
+#
+# === Requires:
+#
+# Nothing.
+#
+# === Sample Usage:
+#
+#   class { 'psp': }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2012 Mike Arnold, unless otherwise noted.
+#
+class psp (
+  $ensure  = 'present',
+  $smh_gid = $psp::params::gid,
+  $smh_uid = $psp::params::uid
+) inherits psp::params {
+
+  case $ensure {
+    /(present)/: {
+      $user_ensure = 'present'
+    }
+    /(absent)/: {
+      $user_ensure = 'absent'
+    }
+    default: {
+      fail('ensure parameter must be present or absent')
+    }
+  }
+
   case $::manufacturer {
     'HP': {
-      include psp::params
       Class['psp'] -> Class['psp::hpsmh'] -> Class['psp::hpsnmp'] -> Class['psp::hphealth'] -> Class['psp::hpvca']
 
       group { 'hpsmh':
-        ensure => 'present',
-        gid    => $psp::params::gid,
+        ensure => $user_ensure,
+        gid    => $smh_gid,
       }
 
       user { 'hpsmh':
-        ensure => 'present',
-        uid    => $psp::params::uid,
+        ensure => $user_ensure,
+        uid    => $smh_uid,
         gid    => 'hpsmh',
         home   => '/opt/hp/hpsmh',
         shell  => '/sbin/nologin',
@@ -36,15 +76,15 @@ class psp {
         enabled  => 1,
         gpgcheck => 1,
         gpgkey   => "${psp::params::yum_server}${psp::params::yum_path}/GPG-KEY-ProLiantSupportPack",
-        baseurl  => "${psp::params::yum_server}${psp::params::yum_path}/${psp::params::yum_operatingsystem}/\$releasever/packages/\$basearch/",
+        baseurl  => "${psp::params::yum_server}${psp::params::yum_path}/${psp::params::yum_os}/\$releasever/packages/\$basearch/",
         priority => $psp::params::yum_priority,
         protect  => $psp::params::yum_protect,
       }
 
-      include psp::hpsmh
-      include psp::hpsnmp
-      include psp::hphealth
-      include psp::hpvca
+#      include psp::hpsmh
+#      include psp::hpsnmp
+#      include psp::hphealth
+#      include psp::hpvca
     }
     # If we are not on HP hardware, do not do anything.
     default: { }
