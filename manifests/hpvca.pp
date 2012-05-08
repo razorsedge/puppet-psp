@@ -54,6 +54,7 @@ class psp::hpvca (
   $autoupgrade        = false,
   $service_ensure     = 'running',
   $service_enable     = true,
+  #TODO: remove hasstatus/hasrestart
   $service_hasstatus  = true,
   $service_hasrestart = true
 ) inherits psp::params {
@@ -84,7 +85,7 @@ class psp::hpvca (
   }
 
   package { 'hpvca':
-    ensure => $ensure,
+    ensure => $package_ensure,
   }
 
 #TODO: file or exec for hpvca configuration?
