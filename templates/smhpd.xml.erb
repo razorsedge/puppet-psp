@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ###                        -->
+<!-- ### File managed by Puppet -->
+<!-- ###                        -->
+<system-management-homepage>
+  <admin-group><%= scope.lookupvar('psp::hpsmh::admin_group') %></admin-group>
+  <operator-group><%= scope.lookupvar('psp::hpsmh::operator_group') %></operator-group>
+  <user-group><%= scope.lookupvar('psp::hpsmh::user_group') %></user-group>
+  <allow-default-os-admin><%= scope.lookupvar('psp::hpsmh::allow_default_os_admin') %></allow-default-os-admin>
+  <anonymous-access><%= scope.lookupvar('psp::hpsmh::anonymous_access') %></anonymous-access>
+  <localaccess-enabled><%= scope.lookupvar('psp::hpsmh::localaccess_enabled') %></localaccess-enabled>
+  <localaccess-type><%= scope.lookupvar('psp::hpsmh::localaccess_type') %></localaccess-type>
+  <trustmode><%= scope.lookupvar('psp::hpsmh::trustmode') %></trustmode>
+  <xenamelist><%= scope.lookupvar('psp::hpsmh::xenamelist') %></xenamelist>
+  <ip-binding><%= scope.lookupvar('psp::hpsmh::ip_binding') %></ip-binding>
+  <ip-binding-list><%= scope.lookupvar('psp::hpsmh::ip_binding_list') %></ip-binding-list>
+  <ip-restricted-logins><%= scope.lookupvar('psp::hpsmh::ip_restricted_logins') %></ip-restricted-logins>
+  <ip-restricted-include><%= scope.lookupvar('psp::hpsmh::ip_restricted_include') %></ip-restricted-include>
+  <ip-restricted-exclude><%= scope.lookupvar('psp::hpsmh::ip_restricted_exclude') %></ip-restricted-exclude>
+  <port2301><%= scope.lookupvar('psp::hpsmh::port2301') %></port2301>
+  <iconview><%= scope.lookupvar('psp::hpsmh::iconview') %></iconview>
+  <box-order><%= scope.lookupvar('psp::hpsmh::box_order') %></box-order>
+  <box-item-order><%= scope.lookupvar('psp::hpsmh::box_item_order') %></box-item-order>
+  <session-timeout><%= scope.lookupvar('psp::hpsmh::session_timeout') %></session-timeout>
+  <ui-timeout><%= scope.lookupvar('psp::hpsmh::ui_timeout') %></ui-timeout>
+  <httpd-error-log><%= scope.lookupvar('psp::hpsmh::httpd_error_log') %></httpd-error-log>
+  <multihomed><%= scope.lookupvar('psp::hpsmh::multihomed') %></multihomed>
+  <rotate-logs-size><%= scope.lookupvar('psp::hpsmh::rotate_logs_size') %></rotate-logs-size>
+</system-management-homepage>
