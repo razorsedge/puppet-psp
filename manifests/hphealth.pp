@@ -48,7 +48,7 @@ class psp::hphealth (
   $ensure         = 'present',
   $autoupgrade    = false,
   $service_ensure = 'running',
-  $service_enable = true,
+  $service_enable = true
 ) inherits psp::params {
 
   case $ensure {
@@ -76,40 +76,49 @@ class psp::hphealth (
     }
   }
 
-  package { 'hp-OpenIPMI':
-    ensure => $package_ensure,
-    name   => $psp::params::ipmi_name,
-  }
+  case $::manufacturer {
+    'HP': {
+      #Package { require => Class['psp'], }
+      include psp
 
-  package { 'hponcfg':
-    ensure => $package_ensure,
-  }
+      package { 'hp-OpenIPMI':
+        ensure => $package_ensure,
+        name   => $psp::params::ipmi_name,
+      }
 
-  package { 'hp-health':
-    ensure => $package_ensure,
-  }
+      package { 'hponcfg':
+        ensure => $package_ensure,
+      }
 
-  package { 'hpacucli':
-    ensure => $package_ensure,
-  }
+      package { 'hp-health':
+        ensure => $package_ensure,
+      }
 
-  package { 'hp-ilo':
-    ensure => $psp::params::ilo_package_ensure,
-  }
+      package { 'hpacucli':
+        ensure => $package_ensure,
+      }
 
-  service { 'hp-ilo':
-    ensure     => $psp::params::ilo_service_ensure,
-    enable     => $psp::params::ilo_service_enable,
-    hasrestart => true,
-    hasstatus  => true,
-    require    => Package['hp-ilo'],
-  }
+      package { 'hp-ilo':
+        ensure => $psp::params::ilo_package_ensure,
+      }
 
-  service { 'hp-health':
-    ensure     => $service_ensure_real,
-    enable     => $service_enable_real,
-    hasrestart => true,
-    hasstatus  => true,
-    require    => [ Package['hp-health'], Package['hp-OpenIPMI'], ],
+      service { 'hp-ilo':
+        ensure     => $psp::params::ilo_service_ensure,
+        enable     => $psp::params::ilo_service_enable,
+        hasrestart => true,
+        hasstatus  => true,
+        require    => Package['hp-ilo'],
+      }
+
+      service { 'hp-health':
+        ensure     => $service_ensure_real,
+        enable     => $service_enable_real,
+        hasrestart => true,
+        hasstatus  => true,
+        require    => [ Package['hp-health'], Package['hp-OpenIPMI'], ],
+      }
+    }
+    # If we are not on HP hardware, do not do anything.
+    default: { }
   }
 }

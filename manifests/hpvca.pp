@@ -84,17 +84,26 @@ class psp::hpvca (
     }
   }
 
-  package { 'hpvca':
-    ensure => $package_ensure,
-  }
+  case $::manufacturer {
+    'HP': {
+      #Package { require => Class['psp'], }
+      include psp
 
-#TODO: file or exec for hpvca configuration?
+      package { 'hpvca':
+        ensure => $package_ensure,
+      }
 
-  service { 'hpvca':
-    ensure     => $service_ensure_real,
-    enable     => $service_enable_real,
-    hasrestart => $service_hasrestart,
-    hasstatus  => $service_hasstatus,
-    require    => Package['hpvca'],
+    # TODO: file or exec for hpvca configuration?
+
+      service { 'hpvca':
+        ensure     => $service_ensure_real,
+        enable     => $service_enable_real,
+        hasrestart => $service_hasrestart,
+        hasstatus  => $service_hasstatus,
+        require    => Package['hpvca'],
+      }
+    }
+    # If we are not on HP hardware, do not do anything.
+    default: { }
   }
 }

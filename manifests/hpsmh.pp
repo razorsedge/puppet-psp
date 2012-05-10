@@ -168,8 +168,6 @@ class psp::hpsmh (
   $rotate_logs_size       = 5
 ) inherits psp::params {
 
-  include psp
-
   case $ensure {
     /(present)/: {
       if $autoupgrade == true {
@@ -196,64 +194,73 @@ class psp::hpsmh (
     }
   }
 
-  package { 'cpqacuxe':
-    ensure => $package_ensure,
-  }
+  case $::manufacturer {
+    'HP': {
+      #Package { require => Class['psp'], }
+      include psp
 
-  package { 'hpdiags':
-    ensure   => $package_ensure,
-    #require => Package['hpsmh'],
-  }
+      package { 'cpqacuxe':
+        ensure => $package_ensure,
+      }
 
-  package { 'hp-smh-templates':
-    ensure   => $package_ensure,
-    #require => Package['hpsmh'],
-    #require => Package['hp-snmp-agents'],
-  }
+      package { 'hpdiags':
+        ensure  => $package_ensure,
+        require => Package['hpsmh'],
+      }
 
-  package { 'hpsmh':
-    ensure => $package_ensure,
-  }
+      package { 'hp-smh-templates':
+        ensure  => $package_ensure,
+        require => Package['hpsmh'],
+        #require => Package['hp-snmp-agents'],
+      }
 
-  # TODO: Figure out some dynamic way to use hpsmh-cert-host1
-  # This file resource installs the cert from the HP SIM server into SMH so that
-  # when clicking through to the host from SIM, the user is not prompted for
-  # authentication.  Multiple certs can be specified.
-#  file { 'hpsmh-cert-host1':
-#    ensure  => $file_ensure,
-#    mode    => '0644',
-#    owner   => 'root',
-#    group   => 'root',
-#    path    => '/opt/hp/hpsmh/certs/host1.pem',
-#    source  => 'puppet:///modules/psp/host1.pem',
-#    require => Package['hpsmh'],
-#    notify  => Service['hpsmhd'],
-#  }
+      package { 'hpsmh':
+        ensure => $package_ensure,
+      }
 
-  # TODO: SMH server certs are in /etc/opt/hp/sslshare/{cert,file}.pem
+      # TODO: Figure out some dynamic way to use hpsmh-cert-host1
+      # This file resource installs the cert from the HP SIM server into SMH so that
+      # when clicking through to the host from SIM, the user is not prompted for
+      # authentication.  Multiple certs can be specified.
+#      file { 'hpsmh-cert-host1':
+#        ensure  => $file_ensure,
+#        mode    => '0644',
+#        owner   => 'root',
+#        group   => 'root',
+#        path    => '/opt/hp/hpsmh/certs/host1.pem',
+#        source  => 'puppet:///modules/psp/host1.pem',
+#        require => Package['hpsmh'],
+#        notify  => Service['hpsmhd'],
+#      }
 
-  file { 'hpsmhconfig':
-    ensure  => $file_ensure,
-    mode    => '0644',
-    owner   => 'root',
-    group   => 'root',
-    path    => '/opt/hp/hpsmh/conf/smhpd.xml',
-    content => template('psp/smhpd.xml.erb'),
-    require => Package['hpsmh'],
-    notify  => Service['hpsmhd'],
-  }
+      # TODO: SMH server certs are in /etc/opt/hp/sslshare/{cert,file}.pem
 
-# TODO: Exec['smhconfig'] or File['hpsmhconfig']?
-#  exec { 'smhconfig':
-#    command => '/opt/hp/hpsmh/sbin/smhconfig --trustmode=TrustByCert',
-#    notify  => Service['hpsmhd'],
-#  }
+      file { 'hpsmhconfig':
+        ensure  => $file_ensure,
+        mode    => '0644',
+        owner   => 'root',
+        group   => 'root',
+        path    => '/opt/hp/hpsmh/conf/smhpd.xml',
+        content => template('psp/smhpd.xml.erb'),
+        require => Package['hpsmh'],
+        notify  => Service['hpsmhd'],
+      }
 
-  service { 'hpsmhd':
-    ensure     => $service_ensure_real,
-    enable     => $service_enable_real,
-    hasrestart => true,
-    hasstatus  => true,
-    require    => Package['hpsmh'],
+#     TODO: Exec['smhconfig'] or File['hpsmhconfig']?
+#      exec { 'smhconfig':
+#        command => '/opt/hp/hpsmh/sbin/smhconfig --trustmode=TrustByCert',
+#        notify  => Service['hpsmhd'],
+#      }
+
+      service { 'hpsmhd':
+        ensure     => $service_ensure_real,
+        enable     => $service_enable_real,
+        hasrestart => true,
+        hasstatus  => true,
+        require    => Package['hpsmh'],
+      }
+    }
+    # If we are not on HP hardware, do not do anything.
+    default: { }
   }
 }
