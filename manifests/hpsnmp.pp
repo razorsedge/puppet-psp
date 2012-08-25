@@ -64,18 +64,13 @@ class psp::hpsnmp (
         owner   => 'root',
         group   => 'hpsmh',
         path    => '/etc/snmp/snmpd.conf-HP',
-        source  => [
-          "puppet:///modules/snmp/snmpd.conf-${::fqdn}",
-          'puppet:///modules/snmp/snmpd.conf',
-        ],
-        require => Package['snmpd'],
-       #notify  => Service['snmpd'],
+        content => template('snmp/snmpd.conf.erb'),
+#        require => Package['snmpd'],
         notify  => Exec['copy_snmpd.conf-HP'],
       }
 
       exec { 'copy_snmpd.conf-HP':
-        command     => '/bin/cp -p /etc/snmp/snmpd.conf-HP /etc/snmp/snmpd.conf',
-       #onlyif      => 'test -f /etc/snmp/snmpd.conf-HP',
+        command     => '/bin/cp /etc/snmp/snmpd.conf-HP /etc/snmp/snmpd.conf',
         require     => File['snmpd.conf-HP'],
         notify      => Exec['hpsnmpconfig'],
         refreshonly => true,
