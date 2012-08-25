@@ -1,14 +1,14 @@
-# Class: psp::snmp
+# == Class: psp::snmp
 #
-# This class manages snmp.
+# This class inherits and overrides snmp::server.
 #
-# Parameters:
+# === Authors:
 #
-# Actions:
+# Mike Arnold <mike@razorsedge.org>
 #
-# Requires:
+# === Copyright:
 #
-# Sample Usage:
+# Copyright (C) 2012 Mike Arnold, unless otherwise noted.
 #
 class psp::snmp inherits snmp::server {
   File['snmpd.conf'] {

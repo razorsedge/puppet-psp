@@ -21,6 +21,10 @@
 #   Start service at boot.
 #   Default: true
 #
+# [*libz_fix*]
+#   Whether to implement a workaround for a faulty hpsmh package %pre script.
+#   Default: auto-set, platform specific
+#
 # [*admin_group*]
 #   List of OS users to put in the SMH admin group, separated by semicolons.
 #   Default: empty
@@ -125,6 +129,7 @@
 # === Requires:
 #
 # Class['psp']
+# Class['psp::hpsnmp']
 #
 # === Sample Usage:
 #

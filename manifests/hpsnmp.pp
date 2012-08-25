@@ -1,14 +1,47 @@
-# Class: snmpd
+# == Class: psp::hpsnmp
 #
-# This class manages snmpd.
+# This class handles installation of the HP Proliant Support Pack SNMP Agent.
 #
-# Parameters:
+# === Parameters:
 #
-# Actions:
+# [*ensure*]
+#   Ensure if present or absent.
+#   Default: present
 #
-# Requires:
+# [*autoupgrade*]
+#   Upgrade package automatically, if there is a newer version.
+#   Default: false
 #
-# Sample Usage:
+# [*service_ensure*]
+#   Ensure if service is running or stopped.
+#   Default: running
+#
+# [*service_enable*]
+#   Start service at boot.
+#   Default: true
+#
+# === Actions:
+#
+# Installs and configures the HP SNMP Agents.
+# Installs and configures the SNMP server to work with the HP SNMP Agents.
+#
+# === Requires:
+#
+# Class['psp']
+# Class['psp::snmp']
+# Class['psp::hphealth']
+#
+# === Sample Usage:
+#
+#   class { 'psp::hpsnmp': }
+#
+# === Authors:
+#
+# Mike Arnold <mike@razorsedge.org>
+#
+# === Copyright:
+#
+# Copyright (C) 2012 Mike Arnold, unless otherwise noted.
 #
 class psp::hpsnmp (
   $ensure         = 'present',
