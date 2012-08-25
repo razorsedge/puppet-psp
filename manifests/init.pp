@@ -56,7 +56,7 @@ class psp (
 
   case $::manufacturer {
     'HP': {
-      Class['psp'] -> Class['psp::hpvca'] -> Class['psp::hphealth'] -> Class['psp::hpsnmp'] -> Class['psp::hpsmh']
+#      Class['psp'] -> Class['psp::hpvca'] -> Class['psp::hphealth'] -> Class['psp::hpsnmp'] -> Class['psp::hpsmh']
 
       @group { 'hpsmh':
         ensure => $user_ensure,
@@ -80,11 +80,6 @@ class psp (
         priority => $psp::params::yum_priority,
         protect  => $psp::params::yum_protect,
       }
-
-#      include psp::hpsmh
-#      include psp::hpsnmp
-#      include psp::hphealth
-#      include psp::hpvca
     }
     # If we are not on HP hardware, do not do anything.
     default: { }

@@ -197,8 +197,8 @@ class psp::hpsmh (
 
   case $::manufacturer {
     'HP': {
-      #Package { require => Class['psp'], }
-      include psp
+      Class['psp'] -> Class['psp::hpsmh'] -> Class['psp::hpsnmp']
+
       realize Group['hpsmh']
       realize User['hpsmh']
 

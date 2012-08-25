@@ -45,10 +45,10 @@ class psp::hpsnmp (
 
   case $::manufacturer {
     'HP': {
-      #Package { require => Class['psp'], }
-      include psp
       include psp::snmp
-      #Class['psp::snmp'] -> Class['psp::hpsnmp']
+      Class['psp'] -> Class['psp::snmp'] -> Class['psp::hphealth'] ->
+      Class['psp::hpsnmp']
+
       realize Group['hpsmh']
       realize User['hpsmh']
 

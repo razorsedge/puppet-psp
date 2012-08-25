@@ -86,8 +86,7 @@ class psp::hpvca (
 
   case $::manufacturer {
     'HP': {
-      #Package { require => Class['psp'], }
-      include psp
+      Class['psp'] -> Class['psp::hpvca']
 
       package { 'hpvca':
         ensure => $package_ensure,

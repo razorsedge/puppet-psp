@@ -78,8 +78,7 @@ class psp::hphealth (
 
   case $::manufacturer {
     'HP': {
-      #Package { require => Class['psp'], }
-      include psp
+      Class['psp'] -> Class['psp::hphealth']
 
       package { 'hp-OpenIPMI':
         ensure => $package_ensure,
