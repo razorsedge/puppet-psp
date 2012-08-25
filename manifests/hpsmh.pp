@@ -214,7 +214,7 @@ class psp::hpsmh (
       package { 'hp-smh-templates':
         ensure  => $package_ensure,
         require => Package['hpsmh'],
-        #require => Package['hp-snmp-agents'],
+#        require => Package['hp-snmp-agents'],
       }
 
       # HP PSP 8.62 on CentOS 6 has an error in the install scripts.
@@ -228,9 +228,9 @@ class psp::hpsmh (
       }
 
       # TODO: Figure out some dynamic way to use hpsmh-cert-host1
-      # This file resource installs the cert from the HP SIM server into SMH so that
-      # when clicking through to the host from SIM, the user is not prompted for
-      # authentication.  Multiple certs can be specified.
+      # This file resource installs the cert from the HP SIM server into SMH so
+      # that when clicking through to the host from SIM, the user is not
+      # prompted for authentication.  Multiple certs can be specified.
 #      file { 'hpsmh-cert-host1':
 #        ensure  => $file_ensure,
 #        mode    => '0644',
@@ -244,6 +244,7 @@ class psp::hpsmh (
 
       # TODO: SMH server certs are in /etc/opt/hp/sslshare/{cert,file}.pem
 
+      # TODO: Exec['smhconfig'] or File['hpsmhconfig']?
       file { 'hpsmhconfig':
         ensure  => $file_ensure,
         mode    => '0644',
@@ -254,8 +255,6 @@ class psp::hpsmh (
         require => Package['hpsmh'],
         notify  => Service['hpsmhd'],
       }
-
-#     TODO: Exec['smhconfig'] or File['hpsmhconfig']?
 #      exec { 'smhconfig':
 #        command => '/opt/hp/hpsmh/sbin/smhconfig --trustmode=TrustByCert',
 #        notify  => Service['hpsmhd'],

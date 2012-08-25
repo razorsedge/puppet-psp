@@ -54,8 +54,8 @@ class psp::hpsnmp (
 
       package { 'hp-snmp-agents':
         ensure   => $package_ensure,
-#        require => Package['hphealth'],
-#        require => Class['snmp'],
+#        require  => Package['hphealth'],
+#        require  => Class['snmp'],
       }
 
       file { 'snmpd.conf-HP':
@@ -82,12 +82,12 @@ class psp::hpsnmp (
         environment => [
           'CMASILENT=yes',
           'CMALOCALHOSTRWCOMMSTR=8t0BAcw4Fjop9IrS4',
-         #'CMASYSCONTACT=',
-         #'CMASYSLOCATION=',
-         #'CMAMGMTSTATIONROCOMMSTR=',
-         #'CMAMGMTSTATIONROIPORDNS=',
-         #'CMATRAPDESTINATIONCOMMSTR=',
-         #'CMATRAPDESTINATIONIPORDNS='
+#          'CMASYSCONTACT=',
+#          'CMASYSLOCATION=',
+#          'CMAMGMTSTATIONROCOMMSTR=',
+#          'CMAMGMTSTATIONROIPORDNS=',
+#          'CMATRAPDESTINATIONCOMMSTR=',
+#          'CMATRAPDESTINATIONIPORDNS='
         ],
 #        subscribe => File['snmpd.conf'],
 #        creates => '/etc/hp-snmp-agents.conf',

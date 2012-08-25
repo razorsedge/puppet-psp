@@ -56,8 +56,6 @@ class psp (
 
   case $::manufacturer {
     'HP': {
-#      Class['psp'] -> Class['psp::hpvca'] -> Class['psp::hphealth'] -> Class['psp::hpsnmp'] -> Class['psp::hpsmh']
-
       @group { 'hpsmh':
         ensure => $user_ensure,
         gid    => $smh_gid,
