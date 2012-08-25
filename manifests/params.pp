@@ -22,6 +22,7 @@ class psp::params {
     'CentOS': {
       $yum_os = 'CentOS'
       $vca_ensure = 'absent'
+      $libz_fix = 'present'
       case $::operatingsystemrelease {
         /4.*/: {
           $ipmi_name = 'hp-OpenIPMI'
@@ -52,6 +53,7 @@ class psp::params {
     'OracleLinux', 'OEL': {
       $yum_os = 'Oracle'
       $vca_ensure = 'absent'
+      $libz_fix = undef
       case $::operatingsystemrelease {
         /4.*/: {
           $ipmi_name = 'hp-OpenIPMI'
@@ -82,6 +84,7 @@ class psp::params {
     'RedHat': {
       $yum_os = 'RedHat'
       $vca_ensure = 'present'
+      $libz_fix = undef
       case $::operatingsystemrelease {
         /4.*/: {
           $ipmi_name = 'hp-OpenIPMI'

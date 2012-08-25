@@ -23,15 +23,15 @@
 #
 # [*admin_group*]
 #   List of OS users to put in the SMH admin group, separated by semicolons.
-#   Default: undef
+#   Default: empty
 #
 # [*operator_group*]
 #   List of OS users to put in the SMH operator group, separated by semicolons.
-#   Default: undef
+#   Default: empty
 #
 # [*user_group*]
 #   List of OS users to put in the SMH user group, separated by semicolons.
-#   Default: undef
+#   Default: empty
 #
 # [*allow_default_os_admin*]
 #   Allow the OS root user to login to SMH.
@@ -57,7 +57,7 @@
 #
 # [*xenamelist*]
 #   A list of trusted server hostnames.
-#   Default: undef
+#   Default: empty
 #
 # [*ip_binding*]
 #   Bind SMH to a specific IP address on the host?
@@ -66,7 +66,7 @@
 # [*ip_binding_list*]
 #   A list IP addresses and/or IP address/netmask pairs, separated by
 #   semicolons.
-#   Default: undef
+#   Default: empty
 #
 # [*ip_restricted_logins*]
 #   Restrict logins to SMH via IP address?
@@ -74,11 +74,11 @@
 #
 # [*ip_restricted_include*]
 #   A list of IP addresses, separated by semicolons.
-#   Default: undef
+#   Default: empty
 #
 # [*ip_restricted_exclude*]
 #   A list of IP addresses, separated by semicolons.
-#   Default: undef
+#   Default: empty
 #
 # [*port2301*]
 #   Whether to enable unencrypted port 2301 access.
@@ -110,7 +110,7 @@
 #
 # [*multihomed*]
 #   A list of hostnames and IP addresses, separated by semicolons.
-#   Default: undef
+#   Default: empty
 #
 # [*rotate_logs_size*]
 #   ?
@@ -143,20 +143,21 @@ class psp::hpsmh (
   $autoupgrade            = false,
   $service_ensure         = 'running',
   $service_enable         = true,
-  $admin_group            = undef,
-  $operator_group         = undef,
-  $user_group             = undef,
+  $libz_fix               = $psp::params::libz_fix,
+  $admin_group            = '',
+  $operator_group         = '',
+  $user_group             = '',
   $allow_default_os_admin = 'true',
   $anonymous_access       = 'false',
   $localaccess_enabled    = 'false',
   $localaccess_type       = 'Anonymous',
   $trustmode              = 'TrustByCert',
-  $xenamelist             = undef,
+  $xenamelist             = '',
   $ip_binding             = 'false',
-  $ip_binding_list        = undef,
+  $ip_binding_list        = '',
   $ip_restricted_logins   = 'false',
-  $ip_restricted_include  = undef,
-  $ip_restricted_exclude  = undef,
+  $ip_restricted_include  = '',
+  $ip_restricted_exclude  = '',
   $port2301               = 'true',
   $iconview               = 'false',
   $box_order              = 'status',
@@ -164,7 +165,7 @@ class psp::hpsmh (
   $session_timeout        = 15,
   $ui_timeout             = 20,
   $httpd_error_log        = 'false',
-  $multihomed             = undef,
+  $multihomed             = '',
   $rotate_logs_size       = 5
 ) inherits psp::params {
 
@@ -216,8 +217,14 @@ class psp::hpsmh (
         #require => Package['hp-snmp-agents'],
       }
 
+      # HP PSP 8.62 on CentOS 6 has an error in the install scripts.
+      file { '/usr/lib/libz.so.1':
+        ensure => $libz_fix,
+      }
+
       package { 'hpsmh':
-        ensure => $package_ensure,
+        ensure  => $package_ensure,
+        require => File['/usr/lib/libz.so.1'],
       }
 
       # TODO: Figure out some dynamic way to use hpsmh-cert-host1
