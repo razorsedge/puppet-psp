@@ -198,6 +198,8 @@ class psp::hpsmh (
     'HP': {
       #Package { require => Class['psp'], }
       include psp
+      realize Group['hpsmh']
+      realize User['hpsmh']
 
       package { 'cpqacuxe':
         ensure => $package_ensure,

@@ -48,6 +48,9 @@ class psp::hpsnmp (
       #Package { require => Class['psp'], }
       include psp
       include psp::snmp
+      #Class['psp::snmp'] -> Class['psp::hpsnmp']
+      realize Group['hpsmh']
+      realize User['hpsmh']
 
       package { 'hp-snmp-agents':
         ensure   => $package_ensure,
@@ -80,6 +83,7 @@ class psp::hpsnmp (
 
       exec { 'hpsnmpconfig':
         command     => '/sbin/hpsnmpconfig',
+        # TODO: remove hardcoded password in CMALOCALHOSTRWCOMMSTR.
         environment => [
           'CMASILENT=yes',
           'CMALOCALHOSTRWCOMMSTR=8t0BAcw4Fjop9IrS4',

@@ -58,12 +58,12 @@ class psp (
     'HP': {
       Class['psp'] -> Class['psp::hpvca'] -> Class['psp::hphealth'] -> Class['psp::hpsnmp'] -> Class['psp::hpsmh']
 
-      group { 'hpsmh':
+      @group { 'hpsmh':
         ensure => $user_ensure,
         gid    => $smh_gid,
       }
 
-      user { 'hpsmh':
+      @user { 'hpsmh':
         ensure => $user_ensure,
         uid    => $smh_uid,
         gid    => 'hpsmh',
