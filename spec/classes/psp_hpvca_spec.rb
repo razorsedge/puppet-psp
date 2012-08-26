@@ -15,11 +15,10 @@ describe 'psp::hpvca', :type => 'class' do
     end
   end
 
-  #redhatish = ['RedHat']
   redhatish = ['RedHat', 'CentOS', 'OracleLinux', 'OEL']
 
   context 'on a supported operatingsystem, non-HP platform' do
-    redhatish.each do |os|
+    (['RedHat']).each do |os|
       context "for operatingsystem #{os}" do
         let(:params) {{}}
         let :facts do {
@@ -34,35 +33,51 @@ describe 'psp::hpvca', :type => 'class' do
   end
 
   context 'on a supported operatingsystem, HP platform, default parameters' do
-    redhatish.each do |os|
+    (['RedHat']).each do |os|
       context "for operatingsystem #{os}" do
         let(:pre_condition) { 'class {"psp":}' }
-        let(:params) {{ :ensure => 'present' }}
         let :facts do {
           :operatingsystem => os,
           :manufacturer    => 'HP'
         }
         end
-#  let :pre_condition do
-#    " define apt::source (
-#$location = '',
-#$release = $lsbdistcodename,
-#$repos = 'main',
-#$include_src = true,
-#$required_packages = false,
-#$key = false,
-#$key_server = 'keyserver.ubuntu.com',
-#$key_content = false,
-#$key_source = false,
-#$pin = false
-#) {
-#notify { 'mock apt::source $title':; }
-#}
-#"
-#  end
         it { should include_class('psp') }
         it { should contain_package('hpvca').with_ensure('present') }
         it { should contain_service('hpvca').with_ensure('running') }
+      end
+    end
+    (['CentOS', 'OracleLinux', 'OEL']).each do |os|
+      context "for operatingsystem #{os}" do
+        let(:pre_condition) { 'class {"psp":}' }
+        let :facts do {
+          :operatingsystem => os,
+          :manufacturer    => 'HP'
+        }
+        end
+        it { should include_class('psp') }
+        it { should contain_package('hpvca').with_ensure('absent') }
+        it { should contain_service('hpvca').with_ensure('stopped') }
+      end
+    end
+  end
+
+  context 'on a supported operatingsystem, HP platform, custom parameters' do
+    (['RedHat']).each do |os|
+      context "for operatingsystem #{os}" do
+        let(:pre_condition) { 'class {"psp":}' }
+        let :params do {
+          :autoupgrade    => true,
+          :service_ensure => 'stopped'
+        }
+        end
+        let :facts do {
+          :operatingsystem => os,
+          :manufacturer    => 'HP'
+        }
+        end
+        it { should include_class('psp') }
+        it { should contain_package('hpvca').with_ensure('latest') }
+        it { should contain_service('hpvca').with_ensure('stopped') }
       end
     end
   end
