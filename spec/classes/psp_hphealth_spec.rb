@@ -41,6 +41,17 @@ describe 'psp::hphealth', :type => 'class' do
     (['RedHat']).each do |os|
       context "for operatingsystem #{os}" do
         let(:pre_condition) { 'class {"psp":}' }
+        let :facts do {
+          :operatingsystem        => os,
+          :manufacturer           => 'HP'
+        }
+        end
+        it { should include_class('psp') }
+        it { should contain_package('hponcfg').with_ensure('present') }
+        it { should contain_package('hp-health').with_ensure('present') }
+        it { should contain_package('hpacucli').with_ensure('present') }
+        it { should contain_service('hp-health').with_ensure('running') }
+
         (['4.0', '5.0']).each do |osr|
           context "for operatingsystemrelease #{osr}" do
             let :facts do {
@@ -49,17 +60,12 @@ describe 'psp::hphealth', :type => 'class' do
               :manufacturer           => 'HP'
             }
             end
-            it { should include_class('psp') }
             it { should contain_package('hp-OpenIPMI').with(
               :ensure => 'present',
               :name   => 'hp-OpenIPMI'
             )}
-            it { should contain_package('hponcfg').with_ensure('present') }
-            it { should contain_package('hp-health').with_ensure('present') }
-            it { should contain_package('hpacucli').with_ensure('present') }
             it { should contain_package('hp-ilo').with_ensure('present') }
             it { should contain_service('hp-ilo').with_ensure('running') }
-            it { should contain_service('hp-health').with_ensure('running') }
           end
         end
 
@@ -70,17 +76,12 @@ describe 'psp::hphealth', :type => 'class' do
             :manufacturer           => 'HP'
           }
           end
-          it { should include_class('psp') }
           it { should contain_package('hp-OpenIPMI').with(
             :ensure => 'present',
             :name   => 'hp-OpenIPMI'
           )}
-          it { should contain_package('hponcfg').with_ensure('present') }
-          it { should contain_package('hp-health').with_ensure('present') }
-          it { should contain_package('hpacucli').with_ensure('present') }
           it { should contain_package('hp-ilo').with_ensure('absent') }
           it { should contain_service('hp-ilo').with_ensure('') }
-          it { should contain_service('hp-health').with_ensure('running') }
         end
 
         context "for operatingsystemrelease 6.0" do
@@ -90,40 +91,13 @@ describe 'psp::hphealth', :type => 'class' do
             :manufacturer           => 'HP'
           } 
           end
-          it { should include_class('psp') } 
           it { should contain_package('hp-OpenIPMI').with(
             :ensure => 'present',
             :name   => 'OpenIPMI'
           )}
-          it { should contain_package('hponcfg').with_ensure('present') } 
-          it { should contain_package('hp-health').with_ensure('present') } 
-          it { should contain_package('hpacucli').with_ensure('present') } 
           it { should contain_package('hp-ilo').with_ensure('absent') } 
           it { should contain_service('hp-ilo').with_ensure('') } 
-          it { should contain_service('hp-health').with_ensure('running') } 
         end
-
-#        (['5.3', '6.0']).each do |osr|
-#          context "for operatingsystemrelease #{osr}" do
-#            let :facts do {
-#              :operatingsystem        => os,
-#              :operatingsystemrelease => osr,
-#              :manufacturer           => 'HP'
-#            }
-#            end
-#            it { should include_class('psp') }
-#            it { should contain_package('hp-OpenIPMI').with(
-#              :ensure => 'present',
-#              :name   => 'OpenIPMI'
-#            )}
-#            it { should contain_package('hponcfg').with_ensure('present') }
-#            it { should contain_package('hp-health').with_ensure('present') }
-#            it { should contain_package('hpacucli').with_ensure('present') }
-#            it { should contain_package('hp-ilo').with_ensure('absent') }
-#            it { should contain_service('hp-ilo').with_ensure('') }
-#            it { should contain_service('hp-health').with_ensure('running') }
-#          end
-#        end
       end
     end
   end

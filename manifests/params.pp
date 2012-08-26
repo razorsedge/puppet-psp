@@ -28,19 +28,19 @@ class psp::params {
       $vca_ensure = 'absent'
       $libz_fix = 'present'
       case $::operatingsystemrelease {
-        /4.*/: {
+        /^4.*/: {
           $ipmi_name = 'hp-OpenIPMI'
           $ilo_package_ensure = 'present'
           $ilo_service_ensure = 'running'
           $ilo_service_enable = true
         }
-        /5.[0-2]*/: {
+        /^5.[0-2]/: {
           $ipmi_name = 'hp-OpenIPMI'
           $ilo_package_ensure = 'present'
           $ilo_service_ensure = 'running'
           $ilo_service_enable = true
         }
-        /5.[3-4]*/: {
+        /^5.[3-4]/: {
           $ipmi_name = 'hp-OpenIPMI'
           $ilo_package_ensure = 'absent'
           $ilo_service_ensure = undef
@@ -59,19 +59,19 @@ class psp::params {
       $vca_ensure = 'absent'
       $libz_fix = undef
       case $::operatingsystemrelease {
-        /4.*/: {
+        /^4.*/: {
           $ipmi_name = 'hp-OpenIPMI'
           $ilo_package_ensure = 'present'
           $ilo_service_ensure = 'running'
           $ilo_service_enable = true
         }
-        /5.[0-2]*/: {
+        /^5.[0-2]/: {
           $ipmi_name = 'hp-OpenIPMI'
           $ilo_package_ensure = 'present'
           $ilo_service_ensure = 'running'
           $ilo_service_enable = true
         }
-        /5.[3-4]*/: {
+        /^5.[3-4]/: {
           $ipmi_name = 'hp-OpenIPMI'
           $ilo_package_ensure = 'absent'
           $ilo_service_ensure = undef
@@ -90,19 +90,19 @@ class psp::params {
       $vca_ensure = 'present'
       $libz_fix = undef
       case $::operatingsystemrelease {
-        /4.*/: {
+        /^4.*/: {
           $ipmi_name = 'hp-OpenIPMI'
           $ilo_package_ensure = 'present'
           $ilo_service_ensure = 'running'
           $ilo_service_enable = true
         }
-        /5.[0-2]*/: {
+        /^5.[0-2]/: {
           $ipmi_name = 'hp-OpenIPMI'
           $ilo_package_ensure = 'present'
           $ilo_service_ensure = 'running'
           $ilo_service_enable = true
         }
-        /5.[3-4]*/: {
+        /^5.[3-4]/: {
           $ipmi_name = 'hp-OpenIPMI'
           $ilo_package_ensure = 'absent'
           $ilo_service_ensure = undef
