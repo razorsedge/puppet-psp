@@ -1,0 +1,6 @@
+fixtures:
+  repositories:
+    snmp: git://github.com/razorsedge/puppet-snmp.git
+#    stdlib: git://github.com/puppetlabs/puppetlabs-stdlib.git
+  symlinks:
+    psp: "#{source_dir}"
