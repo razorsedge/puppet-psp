@@ -42,8 +42,8 @@ describe 'psp::hphealth', :type => 'class' do
       context "for operatingsystem #{os}" do
         let(:pre_condition) { 'class {"psp":}' }
         let :facts do {
-          :operatingsystem        => os,
-          :manufacturer           => 'HP'
+          :operatingsystem => os,
+          :manufacturer    => 'HP'
         }
         end
         it { should include_class('psp') }
