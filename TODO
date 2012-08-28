@@ -12,4 +12,7 @@ RedHat/6/$basearch/8.62/
 Add support for SuSE, Debian, and Ubuntu.
 
 Add support for specifying snmptrap destinations?
+
 Finish Class['psp::hpsmh'] puppetdocs.
+
+Refacter so that yumrepo is in yumrepo.pp and init.pp pulls in everything.
