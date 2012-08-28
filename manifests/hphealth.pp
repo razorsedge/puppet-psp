@@ -97,6 +97,7 @@ class psp::hphealth (
         ensure => $package_ensure,
       }
 
+      # TODO: What happens to Package['hp-ilo'] when $ensure = absent?
       package { 'hp-ilo':
         ensure => $psp::params::ilo_package_ensure,
       }

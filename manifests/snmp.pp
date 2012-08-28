@@ -11,6 +11,7 @@
 # Copyright (C) 2012 Mike Arnold, unless otherwise noted.
 #
 class psp::snmp inherits snmp::server {
+  # TODO: Perhaps move this to Class['snmp::server::psp']?
   File['snmpd.conf'] {
     mode    => '0660',
     group   => 'hpsmh',
