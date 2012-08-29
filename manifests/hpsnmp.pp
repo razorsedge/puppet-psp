@@ -88,7 +88,7 @@ class psp::hpsnmp (
       package { 'hp-snmp-agents':
         ensure   => $package_ensure,
 #        require  => Package['hphealth'],
-#        require  => Class['snmp'],
+        require  => Package['snmpd'],
       }
 
       file { 'snmpd.conf-HP':
@@ -98,12 +98,12 @@ class psp::hpsnmp (
         group   => 'hpsmh',
         path    => '/etc/snmp/snmpd.conf-HP',
         content => template('snmp/snmpd.conf.erb'),
-#        require => Package['snmpd'],
+        require => Package['snmpd'],
         notify  => Exec['copy_snmpd.conf-HP'],
       }
 
       exec { 'copy_snmpd.conf-HP':
-        command     => '/bin/cp /etc/snmp/snmpd.conf-HP /etc/snmp/snmpd.conf',
+        command     => '/bin/cp -f /etc/snmp/snmpd.conf-HP /etc/snmp/snmpd.conf',
         require     => File['snmpd.conf-HP'],
         notify      => Exec['hpsnmpconfig'],
         refreshonly => true,
