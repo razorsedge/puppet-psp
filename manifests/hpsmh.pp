@@ -84,6 +84,14 @@
 #   A list of IP addresses, separated by semicolons.
 #   Default: empty
 #
+# [*autostart*]
+#   ?
+#   Default: false
+#
+# [*timeoutsmh*]
+#   ?
+#   Default: 30
+#
 # [*port2301*]
 #   Whether to enable unencrypted port 2301 access.
 #   Default: true
@@ -163,6 +171,8 @@ class psp::hpsmh (
   $ip_restricted_logins   = 'false',
   $ip_restricted_include  = '',
   $ip_restricted_exclude  = '',
+  $autostart              = 'false',
+  $timeoutsmh             = 30,
   $port2301               = 'true',
   $iconview               = 'false',
   $box_order              = 'status',
@@ -202,7 +212,7 @@ class psp::hpsmh (
 
   case $::manufacturer {
     'HP': {
-      Class['psp'] -> Class['psp::hpsmh'] -> Class['psp::hpsnmp']
+      Class['psp'] -> Class['psp::hpsnmp'] -> Class['psp::hpsmh']
 
       realize Group['hpsmh']
       realize User['hpsmh']

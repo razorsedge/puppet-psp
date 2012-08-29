@@ -50,7 +50,6 @@ describe 'psp::hpsmh', :type => 'class' do
     (['RedHat']).each do |os|
       context "for operatingsystem #{os} operatingsystemrelease 6.0" do
         let(:pre_condition) { ['class { "psp": }', 'class {"psp::hpsnmp":}', 'class {"psp::hphealth":}'].join("\n") }
-        #let(:pre_condition) { ['class { "psp": }', 'class {"psp::hpsnmp":}'].join("\n") }
         let :facts do {
           :operatingsystem        => os,
           :operatingsystemrelease => '6.0',
@@ -69,7 +68,6 @@ describe 'psp::hpsmh', :type => 'class' do
         it { should contain_package('hpsmh').with_ensure('present') }
         it { should contain_file('hpsmhconfig').with_ensure('present') }
         it 'should populate File[hpsmhconfig] with default values' do
-          #params[:allow_default_os_admin] = 'true'
           content = get_param('file', 'hpsmhconfig', 'content')
           content.should =~ /<admin-group><\/admin-group>/
           content.should =~ /<operator-group><\/operator-group>/
@@ -85,6 +83,8 @@ describe 'psp::hpsmh', :type => 'class' do
           content.should =~ /<ip-restricted-logins>false<\/ip-restricted-logins>/
           content.should =~ /<ip-restricted-include><\/ip-restricted-include>/
           content.should =~ /<ip-restricted-exclude><\/ip-restricted-exclude>/
+          content.should =~ /<autostart>false<\/autostart>/
+          content.should =~ /<timeoutsmh>30<\/timeoutsmh>/
           content.should =~ /<port2301>true<\/port2301>/
           content.should =~ /<iconview>false<\/iconview>/
           content.should =~ /<box-order>status<\/box-order>/
@@ -145,6 +145,8 @@ describe 'psp::hpsmh', :type => 'class' do
           params[:ip_restricted_logins] = 'true'
           params[:ip_restricted_include] = '2.3.4.5/24'
           params[:ip_restricted_exclude] = '6.7.8.9/24'
+          params[:autostart] = 'true'
+          params[:timeoutsmh] = '4000'
           params[:port2301] = 'false'
           params[:iconview] = 'true'
           params[:box_order] = 'status'
@@ -169,6 +171,8 @@ describe 'psp::hpsmh', :type => 'class' do
           content.should =~ /<ip-restricted-logins>true<\/ip-restricted-logins>/
           content.should =~ /<ip-restricted-include>2.3.4.5\/24<\/ip-restricted-include>/
           content.should =~ /<ip-restricted-exclude>6.7.8.9\/24<\/ip-restricted-exclude>/
+          content.should =~ /<autostart>true<\/autostart>/
+          content.should =~ /<timeoutsmh>4000<\/timeoutsmh>/
           content.should =~ /<port2301>false<\/port2301>/
           content.should =~ /<iconview>true<\/iconview>/
           content.should =~ /<box-order>status<\/box-order>/
