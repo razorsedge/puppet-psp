@@ -21,14 +21,6 @@
 #   Start service at boot.
 #   Default: true
 #
-# [*service_hasstatus*]
-#   Service has status command.
-#   Default: true
-#
-# [*service_hasrestart*]
-#   Service has restart command.
-#   Default: true
-#
 # === Actions:
 #
 # Installs the HP Version Control Agent.
@@ -53,10 +45,7 @@ class psp::hpvca (
   $ensure             = $psp::params::vca_ensure,
   $autoupgrade        = false,
   $service_ensure     = 'running',
-  $service_enable     = true,
-  #TODO: remove hasstatus/hasrestart
-  $service_hasstatus  = true,
-  $service_hasrestart = true
+  $service_enable     = true
 ) inherits psp::params {
 
   case $ensure {
@@ -92,13 +81,13 @@ class psp::hpvca (
         ensure => $package_ensure,
       }
 
-    # TODO: file or exec for hpvca configuration?
+      # TODO: file or exec for hpvca configuration?
 
       service { 'hpvca':
         ensure     => $service_ensure_real,
         enable     => $service_enable_real,
-        hasrestart => $service_hasrestart,
-        hasstatus  => $service_hasstatus,
+        hasrestart => true,
+        hasstatus  => true,
         require    => Package['hpvca'],
       }
     }
