@@ -4,6 +4,10 @@
 #
 # === Parameters:
 #
+# [*cmalocalhostrwcommstr*]
+#   Community string for Compaq Management Agents to talk to the SNMP server.
+#   Default: none
+#
 # [*ensure*]
 #   Ensure if present or absent.
 #   Default: present
@@ -27,6 +31,7 @@
 #
 # === Requires:
 #
+# $cmalocalhostrwcommstr
 # Class['psp']
 # Class['psp::snmp']
 # Class['psp::hphealth']
@@ -44,6 +49,7 @@
 # Copyright (C) 2012 Mike Arnold, unless otherwise noted.
 #
 class psp::hpsnmp (
+  $cmalocalhostrwcommstr,
   $ensure         = 'present',
   $autoupgrade    = false,
   $service_ensure = 'running',
@@ -111,10 +117,9 @@ class psp::hpsnmp (
 
       exec { 'hpsnmpconfig':
         command     => '/sbin/hpsnmpconfig',
-        # TODO: remove hardcoded password in CMALOCALHOSTRWCOMMSTR.
         environment => [
           'CMASILENT=yes',
-          'CMALOCALHOSTRWCOMMSTR=8t0BAcw4Fjop9IrS4',
+          "CMALOCALHOSTRWCOMMSTR=${cmalocalhostrwcommstr}",
 #          'CMASYSCONTACT=',
 #          'CMASYSLOCATION=',
 #          'CMAMGMTSTATIONROCOMMSTR=',

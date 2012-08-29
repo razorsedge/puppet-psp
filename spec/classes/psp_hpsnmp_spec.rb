@@ -20,7 +20,7 @@ describe 'psp::hpsnmp', :type => 'class' do
   context 'on a supported operatingsystem, non-HP platform' do
     (['RedHat']).each do |os|
       context "for operatingsystem #{os}" do
-        let(:params) {{}}
+        let(:params) {{ :cmalocalhostrwcommstr => 'aString' }}
         let :facts do {
           :operatingsystem => os,
           :manufacturer    => 'foo'
@@ -42,6 +42,7 @@ describe 'psp::hpsnmp', :type => 'class' do
     (['RedHat']).each do |os|
       context "for operatingsystem #{os} operatingsystemrelease 6.0" do
         let(:pre_condition) { ['class { "psp": }', 'class {"psp::snmp":}', 'class {"psp::hphealth":}'].join("\n") }
+        let(:params) {{ :cmalocalhostrwcommstr => 'aString' }}
         let :facts do {
           :operatingsystem        => os,
           :operatingsystemrelease => '6.0',
@@ -72,8 +73,9 @@ describe 'psp::hpsnmp', :type => 'class' do
       context "for operatingsystem #{os} operatingsystemrelease 6.0" do
         let(:pre_condition) { ['class { "psp": }', 'class {"psp::snmp":}', 'class {"psp::hphealth":}'].join("\n") }
         let :params do {
-          :autoupgrade    => true,
-          :service_ensure => 'stopped'
+          :cmalocalhostrwcommstr => 'aString',
+          :autoupgrade           => true,
+          :service_ensure        => 'stopped'
         }
         end
         let :facts do {
