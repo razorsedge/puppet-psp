@@ -48,6 +48,10 @@ Notes
 
 * Only tested on CentOS 6.3 x86_64 on a HP DL140 G2.
 
+Requirements
+-----
+* SNMP (https://github.com/razorsedge/puppet-snmp)
+
 Issues
 ------
 
